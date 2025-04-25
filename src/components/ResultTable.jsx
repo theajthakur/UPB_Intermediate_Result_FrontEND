@@ -23,7 +23,26 @@ export default function ResultTable({ data }) {
           </tr>
         </tbody>
       </table>
-      <table className="table table-bordered"></table>
+      <table className="table table-bordered">
+        <thead>
+          <th>Subject</th>
+          <th>Theory</th>
+          <th>Practical</th>
+          <th>Total</th>
+        </thead>
+        <tbody>
+          {data.marks.map((mark) => {
+            return (
+              <tr>
+                <td>{mark.subject}</td>
+                <td>{mark.obtained_theory}</td>
+                <td>{mark.obtained_total - mark.obtained_theory}</td>
+                <td>{mark.obtained_total}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
