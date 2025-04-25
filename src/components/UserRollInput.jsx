@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import ResultTable from "./ResultTable";
 const options = [
   { value: "", label: "Select" },
   { value: "01", label: "AGRA - 01" },
@@ -82,6 +83,7 @@ const options = [
 export default function UserRollInput() {
   const [roll, setRoll] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
+  const [data, setData] = useState(null);
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
   };
@@ -90,8 +92,8 @@ export default function UserRollInput() {
     const response = await fetch(
       `https://upb-intermediate-result.onrender.com/${roll}`
     );
-    const data = response.json();
-    console.log(data);
+    const mdata = await response.json();
+    setData(mdata);
   };
 
   return (
@@ -126,6 +128,7 @@ export default function UserRollInput() {
           </div>
         </div>
       </div>
+      {data?<ResultTable data={data}/>:""}
     </div>
   );
 }
