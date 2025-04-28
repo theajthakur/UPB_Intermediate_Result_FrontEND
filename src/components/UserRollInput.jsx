@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import ResultTable from "./ResultTable";
+import Loader from "./helper/Loader";
 const options = [
   { value: "", label: "Select" },
   { value: "01", label: "AGRA - 01" },
@@ -82,53 +83,100 @@ const options = [
 
 export default function UserRollInput() {
   const [roll, setRoll] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [standard, setStandard] = useState("");
+  const [district, setDistrict] = useState(null);
   const [data, setData] = useState(null);
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const handleChange = (district) => {
+    setDistrict(district);
   };
   const fetchResult = async () => {
-    if (!roll || !selectedOption) return alert("Fill all the fields!");
+    setErrorMessage(null);
+    setLoading(true);
+    if (!roll || !standard || !district) return alert("Fill all the fields!");
+    const apiUrl = import.meta.env.VITE_API_URL;
     const response = await fetch(
-      `https://upb-intermediate-result.onrender.com/${roll}`
+      `${apiUrl}/${standard}/${district.value}/${roll}`
     );
+    setLoading(false);
     const mdata = await response.json();
+    if (mdata.status === "error") {
+      setErrorMessage(mdata.message);
+      return setData(null);
+    }
     setData(mdata);
   };
 
   return (
     <div className="container mt-5">
-      <div className="bg-light p-3">
-        <div className="row align-items-center">
-          <div className="col-sm-6">
-            <input
-              type="text"
-              value={roll}
-              onChange={(event) => {
-                setRoll(event.target.value);
-              }}
-              className="form-control"
-              placeholder="Enter Roll Number"
-            />
-          </div>
-          <div className="col-sm-3">
-            <Select
-              value={selectedOption}
-              onChange={handleChange}
-              options={options}
-              isSearchable
-              placeholder="Select District"
-              className="form-select"
-            />
-          </div>
-          <div className="col-sm-3">
-            <button className="btn btn-primary w-100" onClick={fetchResult}>
-              Search
-            </button>
-          </div>
+      <div className="row justify-content-center">
+        <div className="col-lg-6 col-md-8 col-sm-10">
+          <form
+            className="h-100 bg-light p-3 rounded shadow"
+            onSubmit={(e) => {
+              e.preventDefault();
+              fetchResult();
+            }}
+          >
+            {loading ? (
+              <Loader />
+            ) : (
+              <div className="row align-items-center">
+                <div className="col-sm-12 my-2">
+                  <input
+                    type="text"
+                    value={roll}
+                    onChange={(event) => {
+                      setRoll(event.target.value);
+                    }}
+                    className="form-control"
+                    placeholder="Enter Roll Number"
+                  />
+                </div>
+                <div className="col-sm-12 my-2">
+                  <Select
+                    value={district}
+                    onChange={handleChange}
+                    options={options}
+                    isSearchable
+                    placeholder="Select District"
+                    className="form-select"
+                  />
+                </div>
+                <div className="col-sm-8 my-2">
+                  <select
+                    className="form-select"
+                    onChange={(event) => setStandard(event.target.value)}
+                  >
+                    <option value="">Select Standard</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                  </select>
+                </div>
+                <div className="col-sm-4 my-2">
+                  <button
+                    className="btn btn-primary w-100"
+                    onClick={fetchResult}
+                  >
+                    Search
+                  </button>
+                </div>
+                <div className="col-sm-12 my-2">
+                  {errorMessage ? (
+                    <div className="alert alert-danger" role="alert">
+                      {errorMessage}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+            )}
+          </form>
         </div>
       </div>
-      {data?<ResultTable data={data}/>:""}
+      {data ? loading ? "" : <ResultTable data={data} /> : ""}
     </div>
   );
 }

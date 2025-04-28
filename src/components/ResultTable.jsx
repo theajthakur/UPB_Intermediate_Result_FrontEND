@@ -17,26 +17,32 @@ export default function ResultTable({ data }) {
             <th>Mother Name</th>
             <td>{data.mother}</td>
           </tr>
-          <tr>
-            <th>Stream</th>
-            <td>{data.stream}</td>
-          </tr>
+          {data.stream ? (
+            <tr>
+              <th>Stream</th>
+              <td>{data.stream}</td>
+            </tr>
+          ) : (
+            ""
+          )}
         </tbody>
       </table>
       <table className="table table-bordered">
         <thead>
-          <th>Subject</th>
-          <th>Theory</th>
-          <th>Practical</th>
-          <th>Total</th>
+          <tr>
+            <th>Subject</th>
+            <th>Theory</th>
+            <th>Practical</th>
+            <th>Total</th>
+          </tr>
         </thead>
         <tbody>
-          {data.marks.map((mark) => {
+          {data.marks.map((mark, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <td>{mark.subject}</td>
                 <td>{mark.obtained_theory}</td>
-                <td>{mark.obtained_total - mark.obtained_theory}</td>
+                <td>{parseInt(mark.obtained_total) - mark.obtained_theory}</td>
                 <td>{mark.obtained_total}</td>
               </tr>
             );
