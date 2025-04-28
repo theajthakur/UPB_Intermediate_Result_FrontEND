@@ -51,9 +51,9 @@ export default function ResultTable({ data }) {
             ""
           ) : (
             <tr>
-              <td>Percentage</td>
-              <td colSpan={3}>
-                <b>{data.percentage}%</b>
+              <td colSpan={3}>Percentage</td>
+              <td>
+                <b>{data.percentage.toFixed(2)}%</b>
               </td>
             </tr>
           )}
