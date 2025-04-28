@@ -1,12 +1,35 @@
-# React + Vite
+# 🎓 Student Result Fetcher - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An attractive and responsive **Student Result Fetcher** web application frontend built using **React.js** and **Bootstrap**.  
+It displays real-time fetched student results in a clean and modern format, including **percentage calculation** for better understanding.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework**: React.js (Vite)
+- **UI Library**: Bootstrap 5
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Features
+
+- 🎯 Displays real-time student results (fetched via backend)
+- 📈 Shows calculated percentage clearly
+- 🎨 Responsive and clean user interface
+- ⚡ Fast and smooth user experience
+- 🧩 Easy to integrate with any backend API
+
+---
+
+## 📂 Folder Structure
+
+```plaintext
+src/
+├── components/      // Reusable UI components like ResultCard, Loader, etc.
+├── pages/           // Page components like HomePage, ResultPage
+├── services/        // API integration files
+├── App.js           // Main App structure
+├── main.jsx         // Entry point of React App
+└── assets/          // Images, custom styles
+```
