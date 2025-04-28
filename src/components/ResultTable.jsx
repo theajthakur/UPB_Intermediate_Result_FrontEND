@@ -47,6 +47,16 @@ export default function ResultTable({ data }) {
               </tr>
             );
           })}
+          {data.marks.length === 0 ? (
+            ""
+          ) : (
+            <tr>
+              <td>Percentage</td>
+              <td colSpan={3}>
+                <b>{data.percentage}%</b>
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>
