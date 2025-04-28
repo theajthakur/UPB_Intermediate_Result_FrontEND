@@ -94,18 +94,33 @@ export default function UserRollInput() {
   const fetchResult = async () => {
     setErrorMessage(null);
     setLoading(true);
-    if (!roll || !standard || !district) return alert("Fill all the fields!");
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const response = await fetch(
-      `${apiUrl}/${standard}/${district.value}/${roll}`
-    );
-    setLoading(false);
-    const mdata = await response.json();
-    if (mdata.status === "error") {
-      setErrorMessage(mdata.message);
-      return setData(null);
+
+    if (!roll || !standard || !district) {
+      alert("Fill all the fields!");
+      setLoading(false);
+      return;
     }
-    setData(mdata);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL;
+      const response = await fetch(
+        `${apiUrl}/${standard}/${district.value}/${roll}`
+      );
+      const mdata = await response.json();
+
+      if (mdata.status === "error") {
+        setErrorMessage(mdata.message);
+        setData(null);
+      } else {
+        setData(mdata);
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setErrorMessage("Something went wrong. Please try again.");
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
