@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  CartesianGrid,
+} from "recharts";
 
 export default function ResultTable({ data }) {
+  const marksData = [];
+  data.marks.map((m) => {
+    const tmp = {};
+    tmp.name = m.subject;
+    tmp.value = parseInt(m.obtained_total);
+    marksData.push(tmp);
+  });
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+
   return (
     <div className="mt-5">
       <table className="table table-striped">
@@ -59,6 +77,18 @@ export default function ResultTable({ data }) {
           )}
         </tbody>
       </table>
+      <BarChart width={500} height={400} data={marksData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="value" fill="#8884d8">
+          {marksData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Bar>
+      </BarChart>
     </div>
   );
 }

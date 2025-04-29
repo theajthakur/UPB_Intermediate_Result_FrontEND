@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Select from "react-select";
 import ResultTable from "./ResultTable";
 import Loader from "./helper/Loader";
-const options = [
+
+const districtList = [
   { value: "", label: "Select" },
   { value: "01", label: "AGRA - 01" },
   { value: "06", label: "ALIGARH - 06" },
@@ -81,15 +82,23 @@ const options = [
   { value: "85", label: "VARANASI - 85" },
 ];
 
+const standardList = [
+  { value: "", label: "Select Standard" },
+  { value: "10", label: "High School (10)" },
+  { value: "12", label: "Intermediate (12)" },
+];
 export default function UserRollInput() {
   const [roll, setRoll] = useState("");
-  const [standard, setStandard] = useState("");
+  const [standard, setStandard] = useState(null);
   const [district, setDistrict] = useState(null);
   const [data, setData] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const handleChange = (district) => {
+  const handleDistrict = (district) => {
     setDistrict(district);
+  };
+  const handleStandard = (standard) => {
+    setStandard(standard);
   };
   const fetchResult = async () => {
     setErrorMessage(null);
@@ -104,7 +113,7 @@ export default function UserRollInput() {
     try {
       const apiUrl = import.meta.env.VITE_API_URL;
       const response = await fetch(
-        `${apiUrl}/${standard}/${district.value}/${roll}`
+        `${apiUrl}/${standard.value}/${district.value}/${roll}`
       );
       const mdata = await response.json();
 
@@ -152,22 +161,22 @@ export default function UserRollInput() {
                 <div className="col-sm-12 my-2">
                   <Select
                     value={district}
-                    onChange={handleChange}
-                    options={options}
+                    onChange={handleDistrict}
+                    options={districtList}
                     isSearchable
                     placeholder="Select District"
                     className="form-select"
                   />
                 </div>
                 <div className="col-sm-8 my-2">
-                  <select
+                  <Select
+                    value={standard}
+                    onChange={handleStandard}
+                    options={standardList}
+                    isSearchable
+                    placeholder="Select Standard"
                     className="form-select"
-                    onChange={(event) => setStandard(event.target.value)}
-                  >
-                    <option value="">Select Standard</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
-                  </select>
+                  />
                 </div>
                 <div className="col-sm-4 my-2">
                   <button
